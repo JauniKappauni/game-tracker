@@ -9,7 +9,7 @@ const db = new sqlite3.Database("./games.db");
 
 db.serialize(() => {
   db.run(
-    "CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, link TEXT, price TEXT)"
+    "CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, link TEXT, price TEXT, image TEXT)"
   );
 });
 
@@ -17,7 +17,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  db.all("SELECT id, name, link, price FROM games", (err, rows) => {
+  db.all("SELECT id, name, link, price, image FROM games", (err, rows) => {
     res.render("index", { title: "Game Tracker", games: rows });
   });
 });
@@ -31,9 +31,10 @@ app.post("/add-game", async (req, res) => {
   if (!price) {
     price = $(".discount_final_price").first().text();
   }
+  const image = $(".game_header_image_full").attr("src");
   db.run(
-    "INSERT INTO games (name, link, price) VALUES (?,?,?)",
-    [name, link, price],
+    "INSERT INTO games (name, link, price, image) VALUES (?,?,?,?)",
+    [name, link, price, image],
     (err, rows) => {
       if (err) {
         return res.send(err);

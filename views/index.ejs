@@ -7,11 +7,16 @@
   </head>
   <body>
     <h2>Games</h2>
-    <% games.forEach(game => { %>
+    <form method="post" action="/add-game">
+      <input type="text" name="link" />
+      <input type="submit" />
+    </form>
+    <% if(games) { %> 
+      <% games.forEach(game => { %>
     <li><%=game.id%></li>
     <li><%=game.name%></li>
     <li><%=game.link%></li>
-    <li><%=game.category%></li>
-    <% }) %>
+    <li><%=game.price%></li>
+    <% }) %> <% %> <% } %>
   </body>
 </html>

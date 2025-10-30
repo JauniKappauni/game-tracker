@@ -4,16 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title%></title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h2>Games</h2>
-    <form method="post" action="/add-game">
-      <input type="text" name="link" />
-      <input type="submit" />
-    </form>
-    <% if(games) { %> <% games.forEach(game => { %>
-    <a href="<%=game.link%>"><li><%=game.name%></li></a>
-    <li><%=game.price%></li>
-    <% }) %> <% %> <% } %>
+  <body class="bg-gray-900 text-white">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-md max-w-7xl mx-auto mt-10">
+      <h1 class="text-4xl text-center mb-6">Game Tracker</h1>
+      <form method="post" action="/add-game" class="mb-4">
+        <input
+          type="text"
+          name="link"
+          placeholder="Enter the Steam Game URL"
+          required
+          class="w-full p-3 rounded bg-gray-700 text-white placeholder-gray-400 resize-none"
+        />
+        <input
+          type="submit"
+          class="bg-blue-600 hover:bg-blue-700 mt-2 px-4 py-2 rounded"
+        />
+      </form>
+      <% if(games) { %>
+      <div class="flex flex-wrap gap-4">
+        <% games.forEach(game => { %>
+        <div class="bg-blue-900 p-6 rounded-lg shadow-md w-48">
+          <a href="<%=game.link%>"
+            ><ul>
+              <%=game.name%>
+            </ul></a
+          >
+          <ul>
+            <%=game.price%>
+          </ul>
+        </div>
+        <% }) %> <% %> <% } %>
+      </div>
+    </div>
   </body>
 </html>

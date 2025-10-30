@@ -11,11 +11,8 @@
       <input type="text" name="link" />
       <input type="submit" />
     </form>
-    <% if(games) { %> 
-      <% games.forEach(game => { %>
-    <li><%=game.id%></li>
-    <li><%=game.name%></li>
-    <li><%=game.link%></li>
+    <% if(games) { %> <% games.forEach(game => { %>
+    <a href="<%=game.link%>"><li><%=game.name%></li></a>
     <li><%=game.price%></li>
     <% }) %> <% %> <% } %>
   </body>

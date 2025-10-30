@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   db.all("SELECT id, name, link, category FROM games", (err, rows) => {
-    res.render("index", { games: rows });
+    res.render("index", { title: "Game Tracker", games: rows });
   });
 });
 

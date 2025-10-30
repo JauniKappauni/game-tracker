@@ -26,16 +26,18 @@ app.post("/add-game", async (req, res) => {
   const link = req.body.link;
   const response = await axios.get(link);
   const $ = cheerio.load(response.data);
-  const name = $(".apphub_AppName").text();
-  const price =
-    $(".game_purchase_price").text();
+  const name = $(".apphub_AppName").first().text();
+  let price = $(".game_purchase_price").first().text();
+  if (!price) {
+    price = $(".discount_final_price").first().text();
+  }
   db.run(
     "INSERT INTO games (name, link, price) VALUES (?,?,?)",
     [name, link, price],
     (err, rows) => {
       if (err) {
         return res.send(err);
-      } else
+      }
       return res.redirect("/");
     }
   );

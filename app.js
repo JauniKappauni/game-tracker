@@ -12,9 +12,29 @@ db.serialize(() => {
 });
 
 app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    res.render("index");
+  db.all("SELECT id, name, link, category FROM games", (err, rows) => {
+    res.render("index", { games: rows });
+  });
+});
+
+app.post("/add-game", (req, res) => {
+  const name = req.body.name;
+  const link = req.body.link;
+  const category = req.body.category;
+  db.run(
+    "INSERT INTO games (name, link, category) VALUES (?,?,?)",
+    [name, link, category],
+    (err, rows) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(rows);
+      }
+    }
+  );
 });
 
 app.listen(port, () => {

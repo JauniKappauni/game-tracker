@@ -25,16 +25,18 @@
       <% if(games) { %>
       <div class="flex flex-wrap gap-4">
         <% games.forEach(game => { %>
-        <div class="bg-blue-900 p-6 rounded-lg shadow-md w-48">
-          <a href="<%=game.link%>"
-            ><ul>
-              <%=game.name%>
-            </ul></a
-          >
+        <a
+          class="bg-blue-900 p-6 rounded-lg shadow-md w-48"
+          href="<%=game.link%>"
+          target="_blank"
+        >
+          <ul>
+            <%=game.name%>
+          </ul>
           <ul>
             <%=game.price%>
           </ul>
-        </div>
+        </a>
         <% }) %> <% %> <% } %>
       </div>
     </div>

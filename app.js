@@ -31,6 +31,9 @@ app.post("/add-game", async (req, res) => {
   if (!price) {
     price = $(".discount_final_price").first().text();
   }
+  if (!price) {
+    price = "Unavailable";
+  }
   const image = $(".game_header_image_full").attr("src");
   db.run(
     "INSERT INTO games (name, link, price, image) VALUES (?,?,?,?)",

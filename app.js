@@ -9,7 +9,7 @@ const db = new sqlite3.Database("./games.db");
 
 db.serialize(() => {
   db.run(
-    "CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, link TEXT, price TEXT, image TEXT)"
+    "CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, link TEXT, price TEXT, image TEXT, RPT TEXT)"
   );
 });
 
@@ -35,9 +35,13 @@ app.post("/add-game", async (req, res) => {
     price = "Unavailable";
   }
   const image = $(".game_header_image_full").attr("src");
+  const supportsRPT =
+    $("*").filter((i, el) => $(el).text().trim() === "Remote Play Together")
+      .length > 0 || /Remote Play Together/i.test(response.data);
+  const RPT = supportsRPT ? "✅" : "No";
   db.run(
-    "INSERT INTO games (name, link, price, image) VALUES (?,?,?,?)",
-    [name, link, price, image],
+    "INSERT INTO games (name, link, price, image, RPT) VALUES (?,?,?,?,?)",
+    [name, link, price, image, RPT],
     (err, rows) => {
       if (err) {
         return res.send(err);
@@ -50,7 +54,7 @@ app.post("/add-game", async (req, res) => {
 app.get("/game/:id", (req, res) => {
   gameId = req.params.id;
   db.get(
-    "SELECT id, name, link, price, image FROM games WHERE id = ?",
+    "SELECT id, name, link, price, image, RPT FROM games WHERE id = ?",
     [gameId],
     (err, row) => {
       res.render("game", { title: row.name, game: row });

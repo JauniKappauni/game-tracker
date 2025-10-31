@@ -44,6 +44,17 @@ app.post("/add-game", async (req, res) => {
   );
 });
 
+app.get("/game/:id", (req, res) => {
+  gameId = req.params.id;
+  db.get(
+    "SELECT id, name, link, price, image FROM games WHERE id = ?",
+    [gameId],
+    (err, row) => {
+      res.render("game", { title: row.name, game: row });
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`);
 });
